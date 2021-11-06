@@ -11,6 +11,7 @@ def generate_basis(n):
   return [2] + [i for i in range(3, n, 2) if basis[i]]
 
 B = generate_basis(64)
+print(B)
 gamma = B
 def is_prime(n):
   if n == 2: return True
@@ -135,19 +136,21 @@ def MITM(S, m, n):
   return None, None
 
 def generator():
-  alpha = generate_basis(300);
+  alpha = generate_basis(70);
   Mfactor = [(2,1),(3,3),(5,2)]
   for i, x in enumerate(alpha):
     if(i <= 2):
       continue
     else:
-      Mfactor.append(tuple([x, 1]))
+      Mfactor.append(tuple([x, 3]))
   Mfactor = tuple(Mfactor)
+  print(Mfactor)
   M = 1
   for f in Mfactor:
     M *= f[0]**f[1]
 
   divisor = get_even_divisor(Mfactor)
+  print(divisor)
   divisor.sort()
   hash_table = [[] for _ in range(2**len(B))]      
   for d in divisor:
@@ -164,7 +167,7 @@ def generator():
       else: h = (h<<1) | 1
     if h != -1:
       hash_table[h].append(r)
-
+  print(hash_table)
   for i in range(2**len(B)):
     print("hash table sz :", len(hash_table[i]))
     q, factors = MITM(hash_table[i][:50],M,512)
